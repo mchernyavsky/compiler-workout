@@ -90,7 +90,7 @@ module Stmt =
     *)
     let rec eval ((state, input, output) as config) stmt = match stmt with
       | Read v -> (Expr.update v (hd input) state, tl input, output)
-      | Write expr -> (state, input, Expr.eval state expr :: output)
+      | Write expr -> (state, input, output @ [Expr.eval state expr])
       | Assign (v, expr) -> (Expr.update v (Expr.eval state expr) state, input, output)
       | Seq (stmt1, stmt2) -> eval (eval config stmt1) stmt2
 
